@@ -9,14 +9,14 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShow: true,
+          headerShow: false,
           contentStyle: { backgroundColor: "white" },
         }}
-        initialRouteName="home"
+        initialRouteName="Home"
       >
-        <Stack.Screen name="home" component={<HomeScreen />} />
-        <Stack.Screen name="login" component={<LoginScreen/>} />
-        <Stack.Screen name="register" component={<RegisterScreen />} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
