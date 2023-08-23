@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUser} from '../redux/actions/index'
 import { auth } from '../firebaseConfig';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import {Feed ,ProfileScreen,Create}from './index';
+const Tab = createBottomTabNavigator();
 
 export  class MainScreen extends Component {
     constructor(props) {
@@ -23,11 +27,34 @@ export  class MainScreen extends Component {
     const { currentUser } = this.props;
     
     return (
-        <View style={styles.root}>
-          <Text>{currentUser?.name} is Logged in</Text>
-          <Button title='Log out' 
-        onPress={() => this.onLogout()}/>
-        </View>
+        <Tab.Navigator 
+         screenOptions={{headerShown: false}}
+         >
+      <Tab.Screen name="Feed" component={Feed}  
+       options={{
+        tabBarLabel: 'Feed',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" color={color} size={26} />
+        ),
+      }}
+      />
+      <Tab.Screen name="Profile" component={ProfileScreen}  
+       options={{
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+        ),
+      }}
+      />
+      <Tab.Screen name="Create" component={Create}  
+       options={{
+        tabBarLabel: 'Create',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="plus" color={color} size={26} />
+        ),
+      }}
+      />
+    </Tab.Navigator>
       );
   }
 }

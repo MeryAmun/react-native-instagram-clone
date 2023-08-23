@@ -6,7 +6,9 @@ import { auth } from "./src/firebaseConfig";
 import { MainScreen } from "./src/screens";
 import { Provider } from "react-redux";
 import { store } from './src/redux/store'
-
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +48,17 @@ export default class App extends Component {
     }
     return (
       <Provider store={store}>
-      <MainScreen/>
+         <NavigationContainer>
+        <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "white" },
+        }}
+        initialRouteName="Main Screen"
+      >
+      <Stack.Screen name="Main Screen" component={MainScreen}/>
+      </Stack.Navigator>
+      </NavigationContainer>
       </Provider>
     );
   }
