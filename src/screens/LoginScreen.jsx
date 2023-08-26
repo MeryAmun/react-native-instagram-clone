@@ -1,5 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { Button, StyleSheet, TextInput, View } from 'react-native'
 import React, { Component } from 'react'
 import { signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from '../firebaseConfig';
@@ -43,7 +42,7 @@ export default class LoginScreen extends Component {
         // })
         console.log(errorMessage)
       });
-      this.props.navigation.navigate("Main Screen")
+      this.props.navigation.navigate("Main Screen",{screen:"Profile"})
   }
  
   render() {

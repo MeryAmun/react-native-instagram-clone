@@ -1,15 +1,18 @@
-import { Text, StyleSheet, View ,Button} from 'react-native'
+import {  StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { signOut} from "firebase/auth";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUser} from '../redux/actions/index'
 import { auth } from '../firebaseConfig';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import {Feed ,ProfileScreen,Create}from './index';
-const Tab = createBottomTabNavigator();
-
+import Feed  from '../subScreens/Feed';
+import Profile from '../subScreens/Profile';
+const Tab = createMaterialBottomTabNavigator();
+const EmptyComponent = () => {
+    return  (null)
+}
 export  class MainScreen extends Component {
     constructor(props) {
         super(props);
@@ -20,15 +23,19 @@ export  class MainScreen extends Component {
           .then(() => {})
           .catch((error) => {});
       };
-    componentDidMount(){
-  this.props.fetchUser()
-    }
+  //   componentDidMount(){
+  // this.props.fetchUser()
+  //   }
   render() {
-    const { currentUser } = this.props;
-    
+    // const { currentUser } = this.props || {}
+    // console.log(currentUser)
     return (
         <Tab.Navigator 
-         screenOptions={{headerShown: false}}
+        initialRouteName='Feed'
+         labeled={false}
+         screenOptions={{
+            headerShown: true,
+          }}
          >
       <Tab.Screen name="Feed" component={Feed}  
        options={{
@@ -38,7 +45,7 @@ export  class MainScreen extends Component {
         ),
       }}
       />
-      <Tab.Screen name="Profile" component={ProfileScreen}  
+      <Tab.Screen name="Profile" component={Profile}  
        options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({ color, size }) => (
@@ -46,11 +53,17 @@ export  class MainScreen extends Component {
         ),
       }}
       />
-      <Tab.Screen name="Create" component={Create}  
+      <Tab.Screen name="Main Create" component={EmptyComponent}
+      listeners={({navigation}) => ({
+        tabPress: event => {
+            event.preventDefault();
+            navigation.navigate("Create")
+        }
+      })}  
        options={{
         tabBarLabel: 'Create',
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="plus" color={color} size={26} />
+          <MaterialCommunityIcons name="camera-plus" color={color} size={26} />
         ),
       }}
       />

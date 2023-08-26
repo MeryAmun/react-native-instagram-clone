@@ -3,11 +3,13 @@ import React, { Component } from "react";
 import Navigation from "./Navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/firebaseConfig";
-import { MainScreen } from "./src/screens";
+import MainScreen from "./src/screens/MainScreen";
+import Create  from "./src/subScreens/Create";
 import { Provider } from "react-redux";
 import { store } from './src/redux/store'
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Save from "./src/subScreens/Save"
 const Stack = createNativeStackNavigator();
 export default class App extends Component {
   constructor(props) {
@@ -57,6 +59,10 @@ export default class App extends Component {
         initialRouteName="Main Screen"
       >
       <Stack.Screen name="Main Screen" component={MainScreen}/>
+      <Stack.Screen name="Create" component={Create} 
+      />
+      <Stack.Screen name="Save" component={Save} 
+      />
       </Stack.Navigator>
       </NavigationContainer>
       </Provider>
