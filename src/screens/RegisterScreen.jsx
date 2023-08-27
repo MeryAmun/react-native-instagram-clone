@@ -2,7 +2,7 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { Component } from 'react'
 import { createUserWithEmailAndPassword, sendEmailVerification,updateProfile } from "firebase/auth";
 import { auth,db, storage} from '../firebaseConfig';
-import { addDoc, collection} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 
 
@@ -27,10 +27,11 @@ export default class RegisterScreen extends Component {
       // send verification mail.
       // sendEmailVerification(auth.currentUser).then(() => {
       //   auth.useDeviceLanguage()
-      
-      addDoc(collection(db,`users/${auth.currentUser.uid}`), {
+      const colRef = collection(db,"users")
+      setDoc(doc(colRef,auth.currentUser.uid), {
          name,
           email,
+          id:auth.currentUser.uid
          });
       })
     // auth.signOut();

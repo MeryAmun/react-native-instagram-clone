@@ -3,12 +3,14 @@ import React, { Component } from 'react'
 import { signOut} from "firebase/auth";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser,fetchUserPosts} from '../redux/actions/index'
+import { fetchUser,fetchUserPosts,fetchUserFollowing } from '../redux/actions/index'
 import { auth } from '../firebaseConfig';
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Feed  from '../subScreens/Feed';
 import Profile from '../subScreens/Profile';
+import Search from '../subScreens/Search';
+
 const Tab = createMaterialBottomTabNavigator();
 const EmptyComponent = () => {
     return  (null)
@@ -26,10 +28,14 @@ export  class MainScreen extends Component {
     componentDidMount(){
   this.props.fetchUser()
   this.props.fetchUserPosts()
+ this.props.fetchUserFollowing()
+
     }
+    
   render() {
     // const { currentUser } = this.props || {}
     // console.log(currentUser)
+    const currUid = this.props.currentUser?.id;
     return (
         <Tab.Navigator 
         initialRouteName='Feed'
@@ -46,7 +52,17 @@ export  class MainScreen extends Component {
         ),
       }}
       />
-      <Tab.Screen name="Profile" component={Profile}  
+      <Tab.Screen name="Search" component={Search}  
+       options={{
+        tabBarLabel: 'Search',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="magnify" color={color} size={26} />
+        ),
+      }}
+      />
+     {
+  currUid === auth?.currentUser?.uid && ( 
+    <Tab.Screen name="Profile" component={Profile}  
        options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({ color, size }) => (
@@ -54,6 +70,9 @@ export  class MainScreen extends Component {
         ),
       }}
       />
+ )
+     }
+      
       <Tab.Screen name="Main Create" component={EmptyComponent}
       listeners={({navigation}) => ({
         tabPress: event => {
@@ -77,7 +96,7 @@ export  class MainScreen extends Component {
 const mapStateToProps = (store) => ({
 currentUser:store.userState.currentUser
 })
-const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts},dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts,fetchUserFollowing},dispatch)
 export default  connect(mapStateToProps,mapDispatchToProps)(MainScreen)
 const styles = StyleSheet.create({
   root: {

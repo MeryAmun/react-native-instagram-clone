@@ -42,7 +42,7 @@ export default class LoginScreen extends Component {
         // })
         console.log(errorMessage)
       });
-      this.props.navigation.navigate("Main Screen",{screen:"Profile"})
+      this.props.navigation.navigate("Main Screen",{screen:"Feed"})
   }
  
   render() {
