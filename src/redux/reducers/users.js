@@ -1,4 +1,4 @@
-import { USER_POSTS_STATE_CHANGE } from "../constants";
+import { USER_POSTS_STATE_CHANGE,USER_STATE_CHANGE } from "../constants";
 
 
 
@@ -10,7 +10,7 @@ const initialState = {
 export const user = (state = initialState,action)  => {
 
     switch (action.type) {
-        case USER_POSTS_STATE_CHANGE:
+        case USER_STATE_CHANGE:
             return {
                 ...state,
                 currentUser: action.payload

@@ -1,4 +1,4 @@
-import {collection, query, onSnapshot, orderBy , getDoc, doc } from "firebase/firestore";
+import {collection, query, onSnapshot, orderBy , getDoc, doc, getDocs } from "firebase/firestore";
 import {  auth, db } from "../../firebaseConfig";
 
 import { USER_POSTS_STATE_CHANGE, USER_STATE_CHANGE } from "../constants";
@@ -12,16 +12,19 @@ export const fetchUser = () => {
     })
   };
 };
-export const fetchUserPosts = () => {
-  return (dispatch) => {
-    const colRef = collection(db, `posts/userPosts${auth.currentUser?.uid}`)
-   query(colRef, orderBy("timestamp, desc"))
+export const fetchUserPosts =  () => {
+  return async (dispatch) => {
+    const data =  query(collection(db, `posts/${auth.currentUser?.uid}/userPosts`), orderBy("timestamp", "desc"))
+ 
    onSnapshot(data, (querySnapshot) => {
-      querySnapshot.docs.map((doc) => (
-        dispatch({ type: USER_POSTS_STATE_CHANGE, payload: doc.data()})
-      ))
+   const posts =  querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    const id = doc.id;
+    return {id, ...data}
+   })
+   dispatch({ type: USER_POSTS_STATE_CHANGE, payload: posts})
     })
   
-     // dispatch({ type: USER_POSTS_STATE_CHANGE, payload: snapshot.data()})
+     
   };
 };

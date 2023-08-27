@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { signOut} from "firebase/auth";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser} from '../redux/actions/index'
+import { fetchUser,fetchUserPosts} from '../redux/actions/index'
 import { auth } from '../firebaseConfig';
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -23,9 +23,10 @@ export  class MainScreen extends Component {
           .then(() => {})
           .catch((error) => {});
       };
-  //   componentDidMount(){
-  // this.props.fetchUser()
-  //   }
+    componentDidMount(){
+  this.props.fetchUser()
+  this.props.fetchUserPosts()
+    }
   render() {
     // const { currentUser } = this.props || {}
     // console.log(currentUser)
@@ -76,7 +77,7 @@ export  class MainScreen extends Component {
 const mapStateToProps = (store) => ({
 currentUser:store.userState.currentUser
 })
-const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser},dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts},dispatch)
 export default  connect(mapStateToProps,mapDispatchToProps)(MainScreen)
 const styles = StyleSheet.create({
   root: {
