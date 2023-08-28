@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { signOut} from "firebase/auth";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser,fetchUserPosts,fetchUserFollowing } from '../redux/actions/index'
+import { fetchUser,fetchUserPosts,fetchUserFollowing,clearData } from '../redux/actions/index'
 import { auth } from '../firebaseConfig';
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -26,16 +26,18 @@ export  class MainScreen extends Component {
           .catch((error) => {});
       };
     componentDidMount(){
-  this.props.fetchUser()
-  this.props.fetchUserPosts()
- this.props.fetchUserFollowing()
+
+  this.props.clearData();
+  this.props.fetchUser();
+  this.props.fetchUserPosts();
+ this.props?.fetchUserFollowing();
 
     }
     
   render() {
     // const { currentUser } = this.props || {}
     // console.log(currentUser)
-    const currUid = this.props.currentUser?.id;
+   // const currUid = this.props.currentUser?.id;
     return (
         <Tab.Navigator 
         initialRouteName='Feed'
@@ -60,8 +62,8 @@ export  class MainScreen extends Component {
         ),
       }}
       />
-     {
-  currUid === auth?.currentUser?.uid && ( 
+     {/* {
+  currUid === auth?.currentUser?.uid && (  */}
     <Tab.Screen name="Profile" component={Profile}  
        options={{
         tabBarLabel: 'Profile',
@@ -70,8 +72,8 @@ export  class MainScreen extends Component {
         ),
       }}
       />
- )
-     }
+ {/* )
+     } */}
       
       <Tab.Screen name="Main Create" component={EmptyComponent}
       listeners={({navigation}) => ({
@@ -96,7 +98,7 @@ export  class MainScreen extends Component {
 const mapStateToProps = (store) => ({
 currentUser:store.userState.currentUser
 })
-const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts,fetchUserFollowing},dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts,fetchUserFollowing, clearData},dispatch)
 export default  connect(mapStateToProps,mapDispatchToProps)(MainScreen)
 const styles = StyleSheet.create({
   root: {

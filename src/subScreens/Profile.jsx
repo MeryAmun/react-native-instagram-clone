@@ -46,20 +46,17 @@ useEffect(() => {
       setFollowing(false)
     }
 }, [props?.route?.params?.uid, props.following])
-
-
-console.log(props.following)
+ 
 
 const handleFollow = () => {
-  // setDoc(doc(db, "collectionName", userID, "anotherCollectionName", documentID))
   setDoc(doc(db, 'following',auth.currentUser.uid,'userFollowing',props?.route?.params?.uid), 
   {});
- // setFollowing((prev) => !prev)
+ 
 }
 const handleUnFollow = () => {
   deleteDoc(doc(db, 'following',auth.currentUser.uid,'userFollowing',props?.route?.params?.uid), 
   {});
-  //setFollowing((prev) => !prev)
+ 
 }
 
 
@@ -95,7 +92,7 @@ const handleUnFollow = () => {
                 />) 
             }
           </View>
-          : null
+          :   <Button title='log out' onPress={logOut}/>
         }
         </View>
         <View style={styles.containerDetails}>
@@ -108,12 +105,10 @@ const handleUnFollow = () => {
             <Image source={{uri: item?.imageUrl}}
           style={styles.image}
           />
-           {/* <Text>{item?.title}</Text> */}
           </View>
          )}
          />
         </View>
-        <Button title='log out' onPress={logOut}/>
       </View>
     )
   }
