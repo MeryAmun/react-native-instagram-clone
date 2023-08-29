@@ -10,6 +10,7 @@ import { store } from './src/redux/store'
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Save from "./src/subScreens/Save"
+import Comments from "./src/subScreens/Comments";
 const Stack = createNativeStackNavigator();
 export default class App extends Component {
   constructor(props) {
@@ -62,6 +63,8 @@ export default class App extends Component {
       <Stack.Screen name="Create" component={Create} 
       />
       <Stack.Screen name="Save" component={Save} 
+      />
+      <Stack.Screen name="Comments" component={Comments} 
       />
       </Stack.Navigator>
       </NavigationContainer>

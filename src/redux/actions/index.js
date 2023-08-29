@@ -60,13 +60,13 @@ export const fetchUserFollowing = () => {
       dispatch({ type: USER_FOLLOWING_STATE_CHANGE, payload: following });
 
       for (let i = 0; i < following.length; i++) {
-        dispatch(fetchAllUsersData(following[i]));
+        dispatch(fetchAllUsersData(following[i], true));
       }
     });
   };
 };
 
-export const fetchAllUsersData = (uid) => {
+export const fetchAllUsersData = (uid,getPosts) => {
   return (dispatch, getState) => {
     const found = getState().usersState.users.some((el) => el.id === uid);
     if (!found) {
@@ -76,11 +76,13 @@ export const fetchAllUsersData = (uid) => {
           let user = snapshot.data();
           user.uid = snapshot.id;
           dispatch({ type: USERS_DATA_STATE_CHANGE, user });
-          dispatch(fetchUsersFollowingPosts(user.id));
         } else {
           console.log("does not exist");
         }
       });
+      if(getPosts) {
+        dispatch(fetchUsersFollowingPosts(uid));
+      }
     }
   };
 };

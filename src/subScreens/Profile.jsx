@@ -14,21 +14,23 @@ const [user, setUser] = useState({});
 const [following, setFollowing] = useState(false)
 const navigation = useNavigation()
 //console.log(props?.route?.params?.uid)
+const propsId = props?.route?.params?.uid 
 const {currentUser } = props;
 
 useEffect(() => {
+  const checkUid = propsId ? propsId :  auth.currentUser.uid
   const {currentUser, posts} = props;
-  if(props?.route?.params?.uid === auth.currentUser.uid){
+  if(checkUid === auth.currentUser.uid){
     setUser(currentUser)
     setUserPosts(posts)
   }else{
     const colRef = collection(db, "users")
-    getDoc(doc(colRef,props?.route?.params?.uid))
+    getDoc(doc(colRef,checkUid))
     .then((snapshot) => {
       setUser(snapshot.data())
     });
 
-    const data =  query(collection(db, `posts/${props?.route?.params?.uid}/userPosts`), orderBy("timestamp", "desc"))
+    const data =  query(collection(db, `posts/${checkUid}/userPosts`), orderBy("timestamp", "desc"))
  
     onSnapshot(data, (querySnapshot) => {
     const posts =  querySnapshot.docs.map((doc) => {
@@ -75,6 +77,7 @@ const handleUnFollow = () => {
         <View style={styles.containerInfo}>
         <Text>{user?.name}</Text>
         <Text>{user?.email}</Text>
+      
         {
           props?.route?.params?.uid !== auth.currentUser.uid ? 
           <View>
@@ -95,6 +98,9 @@ const handleUnFollow = () => {
           :   <Button title='log out' onPress={logOut}/>
         }
         </View>
+        <Button title='log out'
+        style={styles.button}
+        onPress={logOut}/>
         <View style={styles.containerDetails}>
          <FlatList
          numColumns={3}
@@ -142,6 +148,9 @@ const styles = StyleSheet.create({
        flex:1,
         width:"60%",
         aspectRatio: 1 / 1
+      },
+      button:{
+        marginTop:2
       }
 })
 
